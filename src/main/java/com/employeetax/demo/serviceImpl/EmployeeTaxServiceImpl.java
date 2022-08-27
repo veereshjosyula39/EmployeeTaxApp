@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.employeetax.demo.dto.EmployeeDto;
 import com.employeetax.demo.dto.EmployeeTaxDto;
@@ -11,6 +12,7 @@ import com.employeetax.demo.service.EmployeeService;
 import com.employeetax.demo.service.EmployeeServiceTaxService;
 import com.employeetax.demo.util.TaxUtil;
 
+@Service
 public class EmployeeTaxServiceImpl implements EmployeeServiceTaxService {
 
 	@Autowired
