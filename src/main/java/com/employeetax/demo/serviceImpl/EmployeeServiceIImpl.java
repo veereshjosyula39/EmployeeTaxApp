@@ -2,6 +2,8 @@ package com.employeetax.demo.serviceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -20,28 +22,31 @@ public class EmployeeServiceIImpl implements EmployeeService {
 
 	@Autowired
 	EmployeeRepository employeeRepository;
-	
+
 	@Override
 	public EmployeeDto save(EmployeeDto employeeDto) {
-		EmployeeModel  employeeModel = employeeRepository.save(new ModelMapper().map(employeeDto, EmployeeModel.class));
+		EmployeeModel employeeModel = employeeRepository.save(new ModelMapper().map(employeeDto, EmployeeModel.class));
 		EmployeeDto returnEmployeeDto = new ModelMapper().map(employeeModel, EmployeeDto.class);
+		returnEmployeeDto
+				.setPhoneNumber(Stream.of(employeeModel.getPhoneNumber().split(",", -1)).collect(Collectors.toList()));
 		return returnEmployeeDto;
 	}
 
 	@Override
 	public EmployeeDto getEmployee(Long employeeID) {
-		EmployeeModel  employeeModel = employeeRepository.findByEmployeeID(employeeID);
+		EmployeeModel employeeModel = employeeRepository.findByEmployeeID(employeeID);
 		EmployeeDto employeeDto = new ModelMapper().map(employeeModel, EmployeeDto.class);
 		return employeeDto;
-		
+
 	}
 
 	@Override
 	public List<EmployeeDto> getAllEmployee() {
-		List<EmployeeModel>  employees = employeeRepository.findAll();
-		List<EmployeeDto>  employeesDto = new ArrayList<>();
+		List<EmployeeModel> employees = employeeRepository.findAll();
+		List<EmployeeDto> employeesDto = new ArrayList<>();
 		employees.stream().forEach(employee -> {
-			EmployeeDto employeeDto = new ModelMapper().map(employee, new TypeToken<EmployeeDto>() {}.getType());
+			EmployeeDto employeeDto = new ModelMapper().map(employee, new TypeToken<EmployeeDto>() {
+			}.getType());
 			employeesDto.add(employeeDto);
 		});
 		return employeesDto;
