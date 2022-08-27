@@ -1,5 +1,8 @@
 package com.employeetax.demo.serviceImpl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.employeetax.demo.dto.EmployeeDto;
@@ -14,19 +17,26 @@ public class EmployeeTaxServiceImpl implements EmployeeServiceTaxService {
 	EmployeeService employeeService;
 	
 	@Override
-	public EmployeeTaxDto getEmployeeTax(Long employeeID) {
+	public List<EmployeeTaxDto> getEmployeesTax() {
 		
-		EmployeeDto employeeDto = employeeService.getEmployee(employeeID);
+		List<EmployeeDto> employeesDto = employeeService.getAllEmployee();
+		List<EmployeeTaxDto> employeesTaxDto = new ArrayList<EmployeeTaxDto>();
+		for(EmployeeDto employeeDto : employeesDto) {
+			EmployeeTaxDto employeeTaxDto = getEmployeeTax(employeeDto);
+			employeesTaxDto.add(employeeTaxDto);
+		}
+		return employeesTaxDto;
 		
+	}
+	
+	public EmployeeTaxDto getEmployeeTax(EmployeeDto employeeDto) {
 		EmployeeTaxDto employeeTaxDto = new EmployeeTaxDto();
-		employeeTaxDto.setEmployeeID(employeeID);
+		employeeTaxDto.setEmployeeID(employeeDto.getEmployeeID());
 		employeeTaxDto.setFirstName(employeeDto.getFirstName());
 		employeeTaxDto.setLastName(employeeDto.getLastName());
 		employeeTaxDto.setSalaryYearly(TaxUtil.getTotalSalary(employeeDto.getDoj(), employeeDto.getSalary()));
 		employeeTaxDto.setTaxAmount(TaxUtil.getTax(employeeTaxDto.getSalaryYearly()));
-		employeeTaxDto.setCessAmount(employeeTaxDto.getSalaryYearly());
-		return employeeTaxDto;
-		
+		employeeTaxDto.setCessAmount(TaxUtil.getCess(employeeTaxDto.getSalaryYearly()));
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.employeetax.demo.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.employeetax.demo.dto.EmployeeDto;
+import com.employeetax.demo.dto.EmployeeTaxDto;
 import com.employeetax.demo.service.EmployeeService;
 import com.employeetax.demo.service.EmployeeServiceTaxService;
 
@@ -23,9 +26,9 @@ public class EmployeeTaxController {
 	EmployeeServiceTaxService employeeServiceTaxService;
 	
 	@GetMapping(value = "/employeeTax", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<EmployeeDto> saveCustomer(@Valid @RequestBody EmployeeDto employeeDto) {
+	public ResponseEntity<List<EmployeeTaxDto>> saveCustomer(@Valid @RequestBody EmployeeDto employeeDto) {
 		try {
-			return new ResponseEntity<EmployeeDto>(employeeServiceTaxService.getEmployeeTax(employeeDto.getEmployeeID()), HttpStatus.OK);
+			return new ResponseEntity<List<EmployeeTaxDto>>(employeeServiceTaxService.getEmployeesTax(), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
