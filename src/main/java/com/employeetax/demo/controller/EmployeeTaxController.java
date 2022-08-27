@@ -26,7 +26,7 @@ public class EmployeeTaxController {
 	EmployeeServiceTaxService employeeServiceTaxService;
 	
 	@GetMapping(value = "/employeeTax", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<EmployeeTaxDto>> saveCustomer(@Valid @RequestBody EmployeeDto employeeDto) {
+	public ResponseEntity<List<EmployeeTaxDto>> getEmployeesTax() {
 		try {
 			return new ResponseEntity<List<EmployeeTaxDto>>(employeeServiceTaxService.getEmployeesTax(), HttpStatus.OK);
 		} catch (Exception e) {
