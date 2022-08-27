@@ -2,3 +2,9 @@
 .classpath
 .factorypath
 .project
+*.class
+*.prefs
+target/classes/application.properties
+target/classes/META-INF/MANIFEST.MF
+target/classes/META-INF/maven/com.employeetax/EmployeeTaxDeductor/pom.xml
+target/classes/META-INF/maven/com.employeetax/EmployeeTaxDeductor/pom.properties
