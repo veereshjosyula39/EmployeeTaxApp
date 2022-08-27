@@ -27,8 +27,9 @@ public class EmployeeServiceIImpl implements EmployeeService {
 	public EmployeeDto save(EmployeeDto employeeDto) {
 		EmployeeModel employeeModel = employeeRepository.save(new ModelMapper().map(employeeDto, EmployeeModel.class));
 		EmployeeDto returnEmployeeDto = new ModelMapper().map(employeeModel, EmployeeDto.class);
-		returnEmployeeDto
-				.setPhoneNumber(Stream.of(employeeModel.getPhoneNumber().split(",", -1)).collect(Collectors.toList()));
+		returnEmployeeDto.setPhoneNumber(
+				Stream.of(employeeModel.getPhoneNumber().replaceAll("\\[", "").replaceAll("\\]", "").split(",", -1))
+						.collect(Collectors.toList()));
 		return returnEmployeeDto;
 	}
 
