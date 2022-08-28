@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.Period;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 public class TaxUtil {
@@ -19,12 +20,15 @@ public class TaxUtil {
 		LocalDate startDate = convertToLocalDateViaInstant(djo);
 		int fyEndYear = LocalDate.now().getYear();
 		int emplJoinYear = startDate.getYear();
-		if (emplJoinYear < fyEndYear - 1) {
-			startDate = LocalDate.of(fyEndYear - 1, Month.APRIL, TaxConstants.FY_START_DATE);
+		int totalWorkingDays = TaxConstants.FY_TOTAL_MONTHS * TaxConstants.WORKING_DAYS_PER_MONTH;
+		if (emplJoinYear >= fyEndYear - 1 && startDate.getMonthValue()>=Month.APRIL.getValue()) {
+			startDate = convertToLocalDateViaInstant(djo).withDayOfMonth(1);
+			LocalDate fyEndate = LocalDate.of(fyEndYear, Month.MARCH, TaxConstants.FY_END_DATE).withDayOfMonth(1);
+			long months = ChronoUnit.MONTHS.between(fyEndate, startDate);
+			int remaingDays = startDate.lengthOfMonth()-startDate.getDayOfMonth();
+			totalWorkingDays = (int) (months*TaxConstants.WORKING_DAYS_PER_MONTH + remaingDays);
 		}
-		LocalDate fyEndate = LocalDate.of(fyEndYear, Month.MARCH, TaxConstants.FY_END_DATE);
-		Period p = Period.between(fyEndate, startDate);
-		int totalWorkingDays = p.getDays();
+		
 		return totalWorkingDays;
 	}
 
