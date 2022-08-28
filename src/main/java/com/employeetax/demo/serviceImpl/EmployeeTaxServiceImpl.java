@@ -37,7 +37,7 @@ public class EmployeeTaxServiceImpl implements EmployeeServiceTaxService {
 		employeeTaxDto.setFirstName(employeeDto.getFirstName());
 		employeeTaxDto.setDoj(employeeDto.getDoj());
 		employeeTaxDto.setLastName(employeeDto.getLastName());
-		employeeTaxDto.setSalaryYearly(TaxUtil.getTotalSalary(employeeDto.getDoj(), employeeDto.getSalary()));
+		employeeTaxDto.setSalaryYearly(TaxUtil.getTotalSalary(employeeDto.getDoj(), employeeDto.getSalary(), 0));
 		employeeTaxDto.setTaxAmount(TaxUtil.getTax(employeeTaxDto.getSalaryYearly()));
 		employeeTaxDto.setCessAmount(TaxUtil.getCess(employeeTaxDto.getSalaryYearly()));
 		return employeeTaxDto;
